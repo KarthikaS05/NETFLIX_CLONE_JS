@@ -1,3 +1,4 @@
+//api-key : 19f84e11932abbc79e6d83f82d6d1045
 const netflixOriginals =
   "https://api.themoviedb.org/3/discover/tv?api_key=947b0f0af52c9b74afa43eed2267820d&with_networks=213";
 const trending =
@@ -74,19 +75,93 @@ function fetchMovies(url, selector, path) {
     });
 }
 
+//func to get the movies trailer
+async function getMovieTrailer(id) {
+  let url = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=19f84e11932abbc79e6d83f82d6d1045&language=en-US`;
+  //ref https://javascript.info/async-await
+  return await fetch(url).then((response) => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error("something went wrong");
+    }
+  });
+  /* .then((data) => {})
+    .catch((error_data) => {
+      console.log(error_data);
+    }); */
+}
+
+//to set the trailer
+const setTrailer = (trailers) => {
+  const iframe = document.getElementById("movieTrailer");
+  const fallBack = document.querySelector('.fallBack');
+  //check if trailers r thr; if so thn create the iframe src
+  console.log(trailers);
+  if (trailers.length > 0) {
+    iframe.classList.remove("d-none");
+    fallBack.classList.add("d-none");
+    iframe.src = `https://www.youtube.com/embed/${trailers[0].key}`;
+  } else {
+    iframe.classList.add('d-none'); //d-none: display none is class given by bootstrap to make the modal visible or not
+    fallBack.classList.remove('d-none');
+
+  }
+};
+
+//handler method for click event listener on img elem in show movies
+const handleMovieSelection = (e) => {
+  //here we need movie id
+  const id = e.target.getAttribute("data-id");
+  //to iframe elem to give src
+  const iframe = document.getElementById("movieTrailer");
+  //get the trailer by passing movie id
+  getMovieTrailer(id).then((data) => {
+    const results = data.results;
+    //console.log(data);
+    //use filter func by giving a cond chk; filter func returns a collection whr cond is satisfied
+    //youtubeTrailers containes filtered values
+    const youtubeTrailers = results.filter((result) => {
+      if (result.site === "YouTube" && result.type === "Trailer") {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    setTrailer(youtubeTrailers);
+  });
+  //open the modal using its id- bootstrap
+  $("#trailerModal").modal("show");
+  //call api with id
+};
+
 function showMovies(movies, selector, path) {
   var moviesEl = document.querySelector(selector);
-  
+
   for (var movie of movies.results) {
-    
-    var image = ` <img src="https://image.tmdb.org/t/p/original${movie[path]}"></img>`;
-      moviesEl.innerHTML += image;
-      if (selector != ".original__movies") {
+    //create img elem using dom method
+    var imageElem = document.createElement("img");
+    //set movie id attr to img elem - we need id to get trailer
+    imageElem.setAttribute("data-id", movie.id);
+    //give the src
+    imageElem.src = `https://image.tmdb.org/t/p/original${movie[path]}`;
+
+    //now we have img elem then create/add event listener on it that listen for click event
+    imageElem.addEventListener("click", (e) => {
+      handleMovieSelection(e);
+    });
+
+    //add img as child of moviesEl
+    moviesEl.appendChild(imageElem);
+
+    /* var image = ` <img src="https://image.tmdb.org/t/p/original${movie[path]}"></img>`;
+      moviesEl.innerHTML += image; */
+    /*  if (selector != ".original__movies") {
         //if title is undefined then use original_name
-        var text = `<span class="movie__title">${movie.title ? movie.title : movie.original_name}</span>`;
+        var text = `<p class="movie__title">${movie.title ? movie.title : movie.original_name}</p>`;
         moviesEl.innerHTML += text;
        
-      }
+      } */
   }
 }
 

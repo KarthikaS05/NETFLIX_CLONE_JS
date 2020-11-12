@@ -3,10 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PWJ Netflix Clone</title>
+
+    <!--css links for local and bootstrap-->
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <!--why we have to put our css after ext lib css is bcz ours has to override it-->
     <link rel="stylesheet" href="style.css" />
-    <script src="https://kit.fontawesome.com/c939d0e917.js"></script>
-    <script src="script.js"></script>
+    <title>PWJ Netflix Clone</title>
   </head>
   <body>
     <header>
@@ -41,8 +50,7 @@
         <div class="movies__header">
           <h2>Trending Now</h2>
         </div>
-        <div id="trending" class="movies__container">
-           </div>
+        <div id="trending" class="movies__container"></div>
         <!-- top rated movies -->
         <div class="movies__header">
           <h2>Top Rated</h2>
@@ -179,5 +187,64 @@
         </div> -->
       </div>
     </main>
+    <!-- bootstrap Modal -->
+    <div
+      class="modal fade"
+      id="trailerModal"
+      tabindex="-1"
+      role="dialog"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!--remove width of iframe to make it equal to its contents-->
+            <span class="fallBack">Trailer Not Found!!</span>
+            <iframe
+              id="movieTrailer"
+              height="400"
+              src=""
+              frameborder="0"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <div class="modal-footer">
+           
+            <!--save changes & close btn removed-->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--script-->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://kit.fontawesome.com/c939d0e917.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
